@@ -1,7 +1,7 @@
 /* 1. FONT DEFINITION */
 @font-face {
   font-family: "Bungee";
-  src: url("/assets/fonts/font/bungee/Bungee-Regular.ttf") format("truetype");
+  src: url("../fonts/font/bungee/Bungee-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
