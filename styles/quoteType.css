@@ -1,0 +1,117 @@
+/* 1. FONT DEFINITION */
+@font-face {
+  font-family: "Bungee";
+  src: url("./font/bungee/Bungee-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 2. GLOBAL STYLES */
+* {
+  box-sizing: border-box; /* Prevents alignment issues */
+  background-color: #fbe3e8; /* Your pink background */
+}
+
+h1,
+h2,
+h4 {
+  text-align: center;
+  color: #5cbdb9;
+  font-family: "Bungee", sans-serif;
+  background: transparent; /* Ensure headings don't have pink blocks */
+}
+
+h1 {
+  text-decoration: underline;
+  text-decoration-color: #5cbdb9;
+}
+
+h4 {
+  color: black;
+}
+
+p {
+  font-family: "Bungee", sans-serif;
+}
+
+/* 3. THE TYPING AREA (The container of the ghost text) */
+.typing-area-container {
+  position: relative;
+  width: 90%;
+  max-width: 800px;
+  height: 300px;
+  margin: 40px auto;
+  border: 3px solid #5cbdb9;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.2); /* Very subtle white tint */
+  overflow: hidden;
+}
+
+/* 4. THE LAYERS (Ghost text and Typing box) */
+/* We combine these so they stay perfectly on top of each other */
+.quote-layer,
+.input-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 25px;
+  font-size: 26px; /* Larger for better visibility */
+  font-family: "Apercu Mono Pro", monospace;
+  line-height: 1.5;
+  background: transparent !important;
+  border: none !important;
+  margin: 0;
+}
+
+.quote-layer {
+  color: rgba(0, 0, 0, 0.2); /* The faint ghost text */
+  z-index: 1;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.input-layer {
+  color: #000; /* The text you actually type */
+  z-index: 2;
+  resize: none;
+  outline: none;
+  caret-color: black; /* black blinking cursor */
+}
+
+/* 5. FEEDBACK COLORS */
+.incorrect {
+  background-color: rgba(255, 0, 0, 0.3) !important; /* Red tint for errors */
+  color: red !important;
+}
+
+/* 6. STATS & BUTTON */
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  font-weight: bold;
+  font-size: 24px;
+  background: transparent;
+}
+
+.stats p,
+.stats span {
+  background: transparent; /* Stop pink blocks behind text */
+}
+
+.Button-container {
+  text-align: center;
+  background: transparent;
+  margin-top: 20px;
+}
+
+.button {
+  font-family: "Bungee", sans-serif;
+  font-size: 18px;
+  padding: 15px 40px;
+  border: 2px solid black;
+  cursor: pointer;
+  background-color: #e3f4fb;
+}
