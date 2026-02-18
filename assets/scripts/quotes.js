@@ -1,3 +1,6 @@
+/* ---------------------------------------------------------
+   1. DATA & STATE
+   --------------------------------------------------------- */
 var quotes = [
   "Success is not obtained overnight. It comes in installments; you get a little bit today, a little bit tomorrow until the whole package is given out. The day you procrastinate, you lose that day’s success.",
   "Anyone can do any amount of work, provided it isn’t the work he is supposed to be doing at that moment",
@@ -220,7 +223,114 @@ var quotes = [
   "It’s important not to be embarrassed by your past. The contradictions are part of what we are.",
   "Reality is an acquired taste.",
 ];
-function quoteRandomizer() {
-  var randomNumber = Math.floor(Math.random() * quotes.length);
-  document.getElementById("quoteDisplay").innerHTML = quotes[randomNumber];
+
+/* ---------------------------------------------------------
+     2. DOM ELEMENTS & GAME VARIABLES
+     --------------------------------------------------------- */
+let currentQuoteIndex = 0;
+let startTime;
+let timerInterval;
+
+const quoteDisplay = document.getElementById("quoteDisplay");
+const userInput = document.getElementById("userInput");
+const wpmDisplay = document.getElementById("wpm");
+const accuracyDisplay = document.getElementById("accuracy");
+
+/* ---------------------------------------------------------
+     3. CORE GAME FUNCTIONS
+     --------------------------------------------------------- */
+
+function startRace() {
+  // Reset everything
+  currentQuoteIndex = 0;
+  userInput.value = "";
+  userInput.disabled = false;
+  userInput.classList.remove("incorrect", "correct");
+  userInput.focus();
+
+  showQuote();
+
+  // Timer setup
+  startTime = new Date();
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(updateStats, 1000); // Update WPM every second
+}
+
+function showQuote() {
+  if (currentQuoteIndex < quotes.length) {
+    quoteDisplay.innerText = quotes[currentQuoteIndex];
+  } else {
+    // End of the game
+    quoteDisplay.innerText =
+      "You have finished every quote. Now stop procrastinating!";
+    userInput.disabled = true;
+    userInput.value = "";
+    clearInterval(timerInterval);
+  }
+}
+
+/* ---------------------------------------------------------
+     4. EVENT LISTENERS & LOGIC
+     --------------------------------------------------------- */
+
+userInput.addEventListener("input", () => {
+  const currentQuote = quotes[currentQuoteIndex];
+  const userValue = userInput.value;
+
+  // Check if the user finished the current quote
+  if (userValue === currentQuote) {
+    currentQuoteIndex++;
+    userInput.value = ""; // Clear for the next quote
+    showQuote();
+  }
+
+  updateStats();
+});
+
+function updateStats() {
+  const currentQuote = quotes[currentQuoteIndex] || "";
+  const userValue = userInput.value;
+
+  // 1. Visual Feedback (Red/Green Classes)
+  // Check if the current typed string matches the start of the quote
+  if (userValue.length === 0) {
+    // If the box is empty, make it transparent
+    userInput.classList.remove("incorrect", "correct");
+  } else if (userValue === currentQuote.slice(0, userValue.length)) {
+    // If typing is correct
+    userInput.classList.remove("incorrect");
+    userInput.classList.add("correct");
+  } else {
+    // If typing is wrong
+    userInput.classList.add("incorrect");
+    userInput.classList.remove("correct");
+  }
+
+  // 2. Accuracy Calculation
+  let correctChars = 0;
+  for (let i = 0; i < userValue.length; i++) {
+    if (userValue[i] === currentQuote[i]) {
+      correctChars++;
+    }
+  }
+  const accuracy =
+    userValue.length === 0
+      ? 100
+      : Math.round((correctChars / userValue.length) * 100);
+  accuracyDisplay.innerText = accuracy;
+
+  // 3. WPM Calculation
+  const timeElapsed = (new Date() - startTime) / 60000; // time in minutes
+  if (timeElapsed > 0) {
+    // We count chars in all completed quotes + the current typing box
+    let totalCharsTyped = 0;
+    for (let i = 0; i < currentQuoteIndex; i++) {
+      totalCharsTyped += quotes[i].length;
+    }
+    totalCharsTyped += userValue.length;
+
+    // standard WPM formula: (characters / 5) / minutes
+    const wpm = Math.round(totalCharsTyped / 5 / timeElapsed);
+    wpmDisplay.innerText = wpm > 0 ? wpm : 0;
+  }
 }

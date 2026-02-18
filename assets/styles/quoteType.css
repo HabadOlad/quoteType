@@ -9,7 +9,12 @@
 /* 2. GLOBAL STYLES */
 * {
   box-sizing: border-box; /* Prevents alignment issues */
-  background-color: #fbe3e8; /* Your pink background */
+}
+
+body {
+  background-color: #fbe3e8;
+  margin: 0;
+  padding: 20px;
 }
 
 h1,
@@ -81,6 +86,10 @@ p {
 }
 
 /* 5. FEEDBACK COLORS */
+.correct {
+  background-color: rgba(0, 255, 0, 0.1) !important;
+}
+
 .incorrect {
   background-color: rgba(255, 0, 0, 0.3) !important; /* Red tint for errors */
   color: red !important;
